@@ -20,12 +20,18 @@ function git_init {
     git config --global alias.last "log -1 HEAD"
     git config --global alias.timeline "log --oneline --graph --decorate"
     git config --global alias.rvt "checkout HEAD ."
+    git config --global alias.lg "log --all --oneline --decorate --graph"
+    git config --global alias.fc fetch -p
     git config --global core.editor /usr/bin/vim
 }
 
 # show tracked all files
 function git_files {
     git ls-files
+}
+
+function git_files_stage {
+    git ls-files --stage
 }
 
 function git_tag {
@@ -59,6 +65,15 @@ function git_timeline {
     git timeline
 }
 
+# add 
+function git_add {
+    git add $1
+}
+
+function git_unadd {
+    git rm --cached $1
+}
+
 # add branch
 function git_add_branch {
     git branch $1
@@ -74,6 +89,14 @@ function git_remove_branch {
     git branch -D $1
 }
 
-function git_gerrit_enable {
-    git config remote.origin.push refs/heads/*:refs/for/*
+function git_track {
+    git branch --set-upstream $1 $2
+}
+
+function git_stash_drop {
+    git stash drop stash@{$1}
+}
+
+function git_remove_branch {
+    git branch --merged | grep -v "\*" | xargs -n 1 git branch -d
 }

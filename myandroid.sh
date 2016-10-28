@@ -101,3 +101,69 @@ function android-update {
 function android-getScreenShot {
     adb pull /sdcard/Pictures/Screenshots
 }
+
+function android-screenCap {
+    DATE=`date +%Y-%m-%d`
+    FILE_NAME=/sdcard/$DATE.png
+
+    adb shell screencap -p $FILE_NAME
+    adb pull $FILE_NAME
+    adb shell rm $FILE_NAME
+    echo "reterive " $FILE_NAME
+}
+
+function android-screenRecord {
+    DATE=`date +%Y-%m-%d`
+    FILE_NAME=/sdcard/$DATE.mp4
+
+    echo "If you want to stop record. Please CTRL + C"
+
+    adb shell screenrecord --verbose $FILE_NAME
+
+    echo "Please wait 3 second..."
+    sleep 3
+    adb pull $FILE_NAME
+    adb shell rm $FILE_NAME
+    echo "reterive " $FILE_NAME
+}
+
+function clearOcb {
+    adb shell pm clear com.skmc.okcashbag.home_google
+}
+
+function removeOcb {
+    adb uninstall com.skmc.okcashbag.home_google
+}
+
+function removeLog {
+    rm -rf /Users/skplanet/util/LogFilter/*.txt
+}
+
+function initWear {
+    adb -d forward tcp:5601 tcp:5601 
+}
+
+# make_dex dst.dex src.jar
+function make_dex {
+    dx --dex --output=$2 $1
+}
+
+function dex_method_id_by_jar {
+    TEMP=temp.dex
+    dx --dex --output $TEMP $1
+    cat $TEMP | head -c 92 | tail -c 4 | hexdump -e '1/4 "%d\n"'
+    rm $TEMP
+}
+
+function dex_method_id {
+    cat $1 | head -c 92 | tail -c 4 | hexdump -e '1/4 "%d\n"'
+}
+
+function adb_package_list {
+    adb shell 'pm list packages -f' | sed -e 's/.*=//' | sort
+}
+
+function android_tags {
+    # Gets the list of unique tags in a project for logcat filterspecs
+    grep Log\. -r --include "*.java" | awk -F\" '{print $2}' | sort -u | xargs
+}

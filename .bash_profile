@@ -31,8 +31,21 @@ C_BG_PURPLE="\[\033[45m\]"
 C_BG_CYAN="\[\033[46m\]"
 C_BG_LIGHTGRAY="\[\033[47m\]"
 
-export PS1="$C_CYAN\h:$C_YELLOW\w \$$C_DEFAULT "
+function parse_git_branch {
+    inside_git_repo="$(git rev-parse --is-inside-work-tree 2>/dev/null)"
+    if [ "$inside_git_repo" ]; then
+        ref=$(git symbolic-ref HEAD 2> /dev/null) || return
+        commit=$(git rev-list -n1 --abbrev-commit HEAD)
+        echo "${ref#refs/heads/}:${commit}:"
+    else
+        echo ""
+    fi
+}
+
+#export PS1="$C_CYAN\h:$C_YELLOW\w \$$C_DEFAULT "
 PROMPT_COMMAND='echo -ne "\033]0; ${PWD}\007"'
+
+export PS1="$C_CYAN\h:$C_GREEN\$(parse_git_branch)$C_YELLOW\w \$$C_DEFAULT "
 
 ###############################################################################
 ## HOME : MUST CHANGE
@@ -55,6 +68,8 @@ alias go='cd'
 alias ndic="~/.ndic.bash"
 # change -s<dir> if necessary.
 alias djad='jad -o -r -sjava -dsrc **/*.class'
+alias du='du -h'
+alias df='df -lh'
 # command !$
 
 
@@ -89,3 +104,5 @@ source ~/myfunction.sh
 
 # ANDROID
 source ~/myandroid.sh
+
+#find . -name '*.java' | xargs wc -l

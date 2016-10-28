@@ -864,3 +864,11 @@ let g:ctags_statusline=1
 ""(or whatever other additional arguments you want to pass to ctags)
 let g:ctags_args='-I__declspec+'
 let generate_tags=1
+
+map ,n :cn<ENTER>
+map ,p :cp<ENTER>
+map ,l :cl<ENTER>
+map ,w :cw<ENTER>
+
+vmap ,c :s/^/\/\//g<ENTER>
+vmap ,uc :s/^\/\///g<ENTER>
