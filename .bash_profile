@@ -98,6 +98,7 @@ export INFOPATH=$INFOPATH:/opt/local/share/info
 
 # GIT
 source ~/gitfunction.sh
+git_init
 
 # ETC Function
 source ~/myfunction.sh
