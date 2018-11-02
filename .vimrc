@@ -395,7 +395,7 @@ imap <F3> <C-O>:set number!<CR><C-O>:set number?<CR>
 "nnoremap <silent> <F6> :TlistToggle<CR>
 
 "  For Korea Input Method
-inoremap <ESC> <ESC>:set imdisable<CR>
+"inoremap <ESC> <ESC>:set imdisable<CR>
 nnoremap i :set noimd<CR>i
 nnoremap I :set noimd<CR>I
 nnoremap a :set noimd<CR>a
